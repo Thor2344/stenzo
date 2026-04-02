@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STENZO - Modern Fashion Brand</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --gray: #888888;
+            --gray-dark: #333333;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--black);
+            background-color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--black);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-light);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--black);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--black);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            position: relative;
+        }
+
+        .nav-icons button .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--black);
+            color: var(--white);
+            font-size: 0.625rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-icons svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--black);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: var(--black);
+        }
+
+        /* Collection Page */
+        .collection-page {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            padding: 4rem 2rem;
+            display: none;
+        }
+
+        .collection-page.active {
+            display: block;
+        }
+
+        .collection-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .collection-page-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.875rem 2.5rem;
+            background: var(--white);
+            border: 2px solid var(--gray-light);
+            color: var(--black);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--black);
+            border-color: var(--black);
+            color: var(--white);
+        }
+
+        .collection-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .collection-product-card {
+            position: relative;
+            background: var(--gray-light);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .collection-product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .collection-product-image {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .collection-product-info {
+            padding: 1.5rem;
+            background: var(--white);
+        }
+
+        .collection-product-category {
+            font-size: 0.75rem;
+            color: var(--gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .collection-product-name {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .collection-product-price {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Quick View Modal */
+        .quick-view-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .quick-view-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .quick-view-content {
+            max-width: 1000px;
+            width: 90%;
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .quick-view-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .quick-view-close svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .quick-view-image {
+            background: var(--gray-light);
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+        }
+
+        .quick-view-title {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .quick-view-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .size-selector {
+            margin-bottom: 2rem;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .size-option {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .size-option.active {
+            border-color: var(--black);
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .quick-view-add-to-cart {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            font-size: 0.875rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--white);
+            z-index: 2000;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .cart-item-image {
+            width: 70px;
+            height: 90px;
+            background: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--white);
+            border-top: 1px solid var(--gray-light);
+            padding: 5rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand p {
+            color: var(--gray);
+            font-size: 0.9375rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--black);
+        }
+
+        .social-links a:hover {
+            background: var(--black);
+            border-color: var(--black);
+            color: var(--white);
+        }
+
+        .footer-column h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-column a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--black);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--gray-light);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .cart-checkout {
+            width: 100%;
+            padding: 1rem;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--black);
+            color: var(--white);
+            padding: 1rem 2rem;
+            z-index: 4000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll to Top */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--gray-light);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .quick-view-content {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+
+            .collection-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .collection-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showMainPage()">
+                <img src="https://image.pollinations.ai/prompt/STENZO%20logo%20minimalist%20black%20and%20white" alt="STENZO">
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="file:///C:/Users/vanth/Downloads/stenzo/stenzo.html#home" onclick="showMainPage()">Home</a></li>
+                <li><a href="#collection" onclick="showCollection('all')">Collection</a></li>
+                <li><a href="file:///C:/Users/vanth/Downloads/stenzo/stenzo.html#products" onclick="showMainPage(); setTimeout(() => document.getElementById('products').scrollIntoView(), 100)">Products</a></li>
+                <li><a href="file:///C:/Users/vanth/Downloads/stenzo/stenzo.html#about" onclick="showMainPage(); setTimeout(() => document.getElementById('about').scrollIntoView(), 100)">About</a></li>
+                <li><a href="file:///C:/Users/vanth/Downloads/stenzo/stenzo.html#contact" onclick="showMainPage(); setTimeout(() => document.getElementById('contact').scrollIntoView(), 100)">Contact</a></li>
+            </ul>
+
+            <div class="nav-icons">
+                <button id="cartBtn" aria-label="Cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="badge" id="cartBadge">0</span>
+                </button>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Collection Page -->
+    <div class="collection-page" id="collectionPage">
+        <div class="collection-header reveal">
+            <h1 class="collection-page-title" id="collectionPageTitle">All Collection</h1>
+            <p style="color: var(--gray); font-size: 1.125rem;">Discover our curated selection</p>
+        </div>
+
+        <div class="filter-container reveal">
+            <button class="filter-btn active" onclick="filterCollection('all')">All</button>
+            <button class="filter-btn" onclick="filterCollection('men')">Men</button>
+            <button class="filter-btn" onclick="filterCollection('women')">Women</button>
+        </div>
+
+        <div class="collection-grid" id="collectionGrid"></div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal" id="quickViewModal">
+        <div class="quick-view-content">
+            <button class="quick-view-close" onclick="closeQuickView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div class="quick-view-image" id="quickViewImage">👔</div>
+            <div>
+                <h2 class="quick-view-title" id="quickViewTitle">Product Name</h2>
+                <div class="quick-view-price" id="quickViewPrice">Rp 0</div>
+                <p id="quickViewDescription" style="margin-bottom: 2rem; color: var(--gray);">Description</p>
+                
+                <div class="size-selector">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Select Size</div>
+                    <div class="size-options" id="sizeOptions">
+                        <div class="size-option" data-size="S">S</div>
+                        <div class="size-option" data-size="M">M</div>
+                        <div class="size-option" data-size="L">L</div>
+                        <div class="size-option" data-size="XL">XL</div>
+                    </div>
+                </div>
+
+                <button class="quick-view-add-to-cart" onclick="addToCartFromQuickView()">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Shopping Cart</h2>
+            <button onclick="closeCart()" style="background:none;border:none;cursor:pointer;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align:center;color:var(--gray);padding:3rem 0;">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">Rp 0</span>
+            </div>
+            <button class="cart-checkout" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()">↑</button>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" style="margin-top: 70px; height: calc(100vh - 70px); background: var(--gray-light); display: flex; align-items: center; justify-content: center;">
+        <div class="reveal" style="text-align: center; padding: 2rem;">
+            <p style="font-size: 0.875rem; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--gray);">New Collection 2026</p>
+            <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 300; letter-spacing: 8px; margin-bottom: 2rem; text-transform: uppercase;">Timeless<br>Elegance</h1>
+            <p style="font-size: 1.125rem; color: var(--gray-dark); margin-bottom: 3rem; font-weight: 300;">Discover minimalist fashion that defines your style</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="showCollection('all')" style="padding: 1rem 3rem; background: var(--black); color: var(--white); border: 2px solid var(--black); font-size: 0.875rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;">Shop Now</button>
+                <button onclick="showCollection('men')" style="padding: 1rem 3rem; background: var(--white); color: var(--black); border: 2px solid var(--black); font-size: 0.875rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;">Men</button>
+                <button onclick="showCollection('women')" style="padding: 1rem 3rem; background: var(--white); color: var(--black); border: 2px solid var(--black); font-size: 0.875rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;">Women</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured" id="products" style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto;">
+        <div class="reveal" style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2rem; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem;">Featured Products</h2>
+            <p style="color: var(--gray);">Curated selection for the modern individual</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            <div class="reveal" style="position: relative; background: var(--gray-light); aspect-ratio: 3/4; cursor: pointer;" onclick="showCollection('all')">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">👔</div>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: var(--white);">
+                    <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.25rem;">Classic Blazer</h3>
+                    <p>Rp 1.299.000</p>
+                </div>
+            </div>
+            <div class="reveal" style="position: relative; background: var(--gray-light); aspect-ratio: 3/4; cursor: pointer;" onclick="showCollection('all')">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">👗</div>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: var(--white);">
+                    <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.25rem;">Minimalist Dress</h3>
+                    <p>Rp 1.599.000</p>
+                </div>
+            </div>
+            <div class="reveal" style="position: relative; background: var(--gray-light); aspect-ratio: 3/4; cursor: pointer;" onclick="showCollection('all')">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">👞</div>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: var(--white);">
+                    <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.25rem;">Leather Shoes</h3>
+                    <p>Rp 1.899.000</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Section -->
+    <section class="collection-section" id="collectionSection" style="display: grid; grid-template-columns: repeat(2, 1fr); min-height: 60vh;">
+        <div class="reveal" style="background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 40vh;" onclick="showCollection('men')">
+            <div style="text-align: center; padding: 3rem;">
+                <h3 style="font-size: 2.5rem; font-weight: 300; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 1rem;">Men</h3>
+                <p style="margin-bottom: 2rem;">Sophisticated essentials</p>
+                <button style="padding: 1rem 2rem; background: transparent; color: var(--white); border: 2px solid var(--white); cursor: pointer;">Explore</button>
+            </div>
+        </div>
+        <div class="reveal" style="background: var(--gray-light); display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 40vh;" onclick="showCollection('women')">
+            <div style="text-align: center; padding: 3rem;">
+                <h3 style="font-size: 2.5rem; font-weight: 300; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 1rem;">Women</h3>
+                <p style="margin-bottom: 2rem;">Elegant pieces</p>
+                <button style="padding: 1rem 2rem; background: var(--black); color: var(--white); border: 2px solid var(--black); cursor: pointer;">Explore</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about" style="padding: 6rem 2rem; background: var(--black); color: var(--white);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="reveal" style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 300; letter-spacing: 4px; margin-bottom: 1.5rem; text-transform: uppercase;">Our Philosophy</h2>
+                <p style="font-size: 1.125rem; line-height: 1.8; color: #aaa; max-width: 800px; margin: 0 auto;">STENZO represents the perfect balance between minimalism and sophistication. We believe in creating timeless pieces that transcend seasonal trends.</p>
+            </div>
+            <div class="reveal" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; text-align: center;">
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 300; margin-bottom: 0.5rem;">10+</h3>
+                    <p style="color: var(--gray); text-transform: uppercase; letter-spacing: 2px; font-size: 0.875rem;">Years Experience</p>
+                </div>
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 300; margin-bottom: 0.5rem;">50K+</h3>
+                    <p style="color: var(--gray); text-transform: uppercase; letter-spacing: 2px; font-size: 0.875rem;">Happy Customers</p>
+                </div>
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 300; margin-bottom: 0.5rem;">100%</h3>
+                    <p style="color: var(--gray); text-transform: uppercase; letter-spacing: 2px; font-size: 0.875rem;">Quality Guaranteed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <img src="https://image.pollinations.ai/prompt/STENZO%20logo%20with%20two%20black%20swoosh%20marks%20above%20text%2C%20minimalist%20fashion%20brand%20logo%2C%20black%20and%20white%2C%20clean%20design%2C%20transparent%20background" alt="STENZO Logo" style="height: 40px;">
+                    </a>
+                    <p>Redefining modern fashion through minimalist design and exceptional quality. Join us in our journey towards timeless style.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram">IG</a>
+                        <a href="#" aria-label="Facebook">FB</a>
+                        <a href="#" aria-label="Twitter">TW</a>
+                        <a href="#" aria-label="Pinterest">PI</a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Men</a></li>
+                        <li><a href="#">Women</a></li>
+                        <li><a href="#">Accessories</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Help</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 STENZO. All rights reserved.</p>
+                <p>Designed with precision and care</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            { id: 1, name: 'Classic Blazer', category: 'men', price: 1299000, icon: '👔', description: 'Premium wool blend blazer with tailored fit.' },
+            { id: 2, name: 'Essential Tee', category: 'men', price: 399000, icon: '👕', description: 'Premium cotton essential tee.' },
+            { id: 3, name: 'Tailored Trousers', category: 'men', price: 899000, icon: '👖', description: 'Slim-fit tailored trousers.' },
+            { id: 4, name: 'Wool Coat', category: 'men', price: 2499000, icon: '🧥', description: 'Luxurious wool coat.' },
+            { id: 5, name: 'Leather Shoes', category: 'men', price: 1899000, icon: '👞', description: 'Handcrafted leather oxford shoes.' },
+            { id: 6, name: 'Minimalist Dress', category: 'women', price: 1599000, icon: '👗', description: 'Elegant minimalist dress.' },
+            { id: 7, name: 'Silk Blouse', category: 'women', price: 1199000, icon: '👚', description: 'Luxurious silk blouse.' },
+            { id: 8, name: 'Tailored Blazer', category: 'women', price: 1699000, icon: '🦺', description: 'Feminine tailored blazer.' },
+            { id: 9, name: 'Wide Leg Pants', category: 'women', price: 999000, icon: '👖', description: 'Flowing wide leg pants.' },
+            { id: 10, name: 'Cashmere Sweater', category: 'women', price: 2199000, icon: '🧶', description: 'Ultra-soft cashmere sweater.' },
+            { id: 11, name: 'Leather Handbag', category: 'women', price: 2899000, icon: '👜', description: 'Premium leather handbag.' },
+            { id: 12, name: 'Linen Shirt', category: 'men', price: 799000, icon: '👔', description: 'Breathable linen shirt.' }
+        ];
+
+        let cart = [];
+        let quickViewProduct = null;
+        let selectedSize = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCollection('all');
+            setupMobileMenu();
+            setupCart();
+            setupScrollAnimations();
+            setupScrollToTop();
+        });
+
+        // Mobile Menu
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+
+        // Show Collection Page
+        function showCollection(filter) {
+            document.body.classList.add('collection-view');
+            document.getElementById('collectionPage').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => filterCollection(filter), 100);
+        }
+
+        // Show Main Page
+        function showMainPage() {
+            document.body.classList.remove('collection-view');
+            document.getElementById('collectionPage').classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Filter Collection
+        function filterCollection(filter) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if ((filter === 'all' && btn.textContent === 'All') || 
+                    (filter === 'men' && btn.textContent === 'Men') ||
+                    (filter === 'women' && btn.textContent === 'Women')) {
+                    btn.classList.add('active');
+                }
+            });
+
+            const titles = { 'all': 'All Collection', 'men': "Men's Collection", 'women': "Women's Collection" };
+            document.getElementById('collectionPageTitle').textContent = titles[filter];
+
+            renderCollection(filter);
+        }
+
+        // Render Collection
+        function renderCollection(filter) {
+            const grid = document.getElementById('collectionGrid');
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            grid.innerHTML = filtered.map((product, index) => `
+                <div class="collection-product-card reveal" style="animation-delay: ${index * 0.1}s" onclick="openQuickView(${product.id})">
+                    <div class="collection-product-image">${product.icon}</div>
+                    <div class="collection-product-info">
+                        <div class="collection-product-category">${product.category}</div>
+                        <div class="collection-product-name">${product.name}</div>
+                        <div class="collection-product-price">Rp ${product.price.toLocaleString('id-ID')}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            setTimeout(() => setupScrollAnimations(), 100);
+        }
+
+        // Quick View
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            quickViewProduct = product;
+            selectedSize = null;
+
+            document.getElementById('quickViewImage').textContent = product.icon;
+            document.getElementById('quickViewTitle').textContent = product.name;
+            document.getElementById('quickViewPrice').textContent = `Rp ${product.price.toLocaleString('id-ID')}`;
+            document.getElementById('quickViewDescription').textContent = product.description;
+            
+            document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('active'));
+
+            document.getElementById('quickViewModal').classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.remove('active');
+            document.body.classList.remove('modal-open');
+            quickViewProduct = null;
+        }
+
+        // Size selection
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('size-option')) {
+                document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('active'));
+                e.target.classList.add('active');
+                selectedSize = e.target.dataset.size;
+            }
+        });
+
+        function addToCartFromQuickView() {
+            if (!quickViewProduct) return;
+            if (!selectedSize) {
+                showToast('Please select a size');
+                return;
+            }
+
+            cart.push({
+                ...quickViewProduct,
+                size: selectedSize,
+                quantity: 1,
+                cartId: Date.now()
+            });
+
+            updateCart();
+            showToast(`${quickViewProduct.name} added to cart`);
+            closeQuickView();
+            openCart();
+        }
+
+        // Cart Functions
+        function setupCart() {
+            document.getElementById('cartBtn').addEventListener('click', openCart);
+            document.getElementById('cartOverlay').addEventListener('click', closeCart);
+        }
+
+        function openCart() {
+            document.getElementById('cartSidebar').classList.add('active');
+            document.getElementById('cartOverlay').classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.remove('active');
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        function updateCart() {
+            const badge = document.getElementById('cartBadge');
+            const items = document.getElementById('cartItems');
+            const total = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            badge.textContent = totalItems;
+            badge.style.display = totalItems > 0 ? 'flex' : 'none';
+
+            if (cart.length === 0) {
+                items.innerHTML = '<p style="text-align:center;color:var(--gray);padding:3rem 0;">Your cart is empty</p>';
+            } else {
+                items.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${item.icon}</div>
+                        <div style="flex:1;">
+                            <div style="font-weight:500;">${item.name}</div>
+                            <div style="color:var(--gray);font-size:0.875rem;">Size: ${item.size} | Rp ${item.price.toLocaleString('id-ID')}</div>
+                            <button onclick="removeFromCart(${item.cartId})" style="margin-top:0.5rem;background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.875rem;">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            total.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(i => i.cartId !== cartId);
+            updateCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty');
+            } else {
+                showToast('Proceeding to checkout...');
+            }
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
+        }
+
+        // Scroll Animations
+        function setupScrollAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+
+            reveals.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', setupScrollAnimations);
+
+        // Scroll to Top
+        function setupScrollToTop() {
+            const btn = document.getElementById('scrollToTop');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 500) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Close modals on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeQuickView();
+                closeCart();
+            }
+        });
+    </script>
+</body>
+</html>
